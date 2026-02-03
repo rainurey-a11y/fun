@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For My Favorite Person ❤️</title>
     <style>
-        /* 1. Romantic Gradient Background */
         body {
             display: flex;
             flex-direction: column;
@@ -17,9 +16,9 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
             overflow: hidden;
+            transition: background 1s ease;
         }
 
-        /* 2. Soft Glassmorphism Container */
         #container {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -29,22 +28,18 @@
             box-shadow: 0 20px 40px rgba(255, 105, 180, 0.3);
             max-width: 450px;
             z-index: 10;
-            transition: all 0.5s ease;
         }
 
         img {
             width: 250px;
             border-radius: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
         h1 {
             color: #d81b60;
             font-size: 28px;
-            font-weight: 700;
             margin-bottom: 30px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
 
         .buttons {
@@ -55,7 +50,6 @@
             flex-wrap: wrap;
         }
 
-        /* 3. Beating Heart Animation for Yes Button */
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -70,7 +64,6 @@
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .btn-pink {
@@ -79,30 +72,18 @@
             animation: pulse 1.5s infinite;
         }
 
-        .btn-pink:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.4);
-        }
+        .btn-gray { background-color: #f0f0f0; color: #888; }
 
-        .btn-gray {
-            background-color: #f0f0f0;
-            color: #888;
-        }
-
-        /* 4. Improved Heart Rain */
         .heart {
             position: fixed;
             top: -10vh;
             animation: fall linear forwards;
             z-index: 5;
-            user-select: none;
         }
 
         @keyframes fall {
             to { transform: translateY(110vh) rotate(360deg); }
         }
-
-        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -110,24 +91,24 @@
     <div id="container">
         <div id="phase1">
             <img src="minion-minion-loves.gif" alt="Minion Love">
-            <h1>Will you be my Valentine?</h1>
+            <h1>Will you be my Valentine? 🥺</h1>
             <div class="buttons">
                 <button id="yesBtn" class="btn-pink" onclick="nextPhase()">Yes! ❤️</button>
                 <button id="noBtn" class="btn-gray" onmouseover="moveButton('noBtn')">No</button>
             </div>
         </div>
 
-     <div id="phase2" style="display:none;">
-    <img src="tenor_1.gif" alt="Happy Minions">
-    <h1>How should our story begin? 🌙✨<br>
-        <small style="font-size: 16px; color: #ad1457;">Pick a plan for the night: 🌃</small>
-    </h1>
-    <div class="buttons">
-        <button class="btn-pink" onclick="finalAlert()">Dinner 🥂✨</button>
-        <button class="btn-pink" onclick="finalAlert()"> A Mystery Ride 🛣️ </button>
-        <button id="changeMindBtn" class="btn-gray" onmouseover="moveButton('changeMindBtn')">I changed my mind</button>
-    </div>
-</div>
+        <div id="phase2" style="display:none;">
+            <img src="tenor_1.gif" alt="Happy Minions">
+            <h1>How should our story begin? 🌙✨<br>
+                <small style="font-size: 16px; color: #ad1457;">Pick a plan for the night: 🌃</small>
+            </h1>
+            <div class="buttons">
+                <button class="btn-pink" onclick="sendWhatsApp('Dinner 🥂✨')">Dinner 🥂✨</button>
+                <button class="btn-pink" onclick="sendWhatsApp('a Night Drive 🚗💨')">Night Drive 🚗💨</button>
+                <button id="changeMindBtn" class="btn-gray" onmouseover="moveButton('changeMindBtn')">Change Mind 🌙</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -135,7 +116,6 @@
 
         function moveButton(id) {
             const btn = document.getElementById(id);
-            // Add sound effect here if you want!
             const x = Math.random() * (window.innerWidth - btn.offsetWidth);
             const y = Math.random() * (window.innerHeight - btn.offsetHeight);
             btn.style.position = 'fixed';
@@ -153,27 +133,30 @@
         function nextPhase() {
             document.getElementById('phase1').style.display = 'none';
             document.getElementById('phase2').style.display = 'block';
+            document.body.style.background = "linear-gradient(135deg, #2c3e50 0%, #000000 100%)";
+            document.getElementById('container').style.background = "rgba(255, 255, 255, 0.9)";
             setInterval(createHeart, 150);
         }
 
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
-            // Randomly pick between different heart colors
-            const colors = ['❤️', '💖', '💝', '💕', '🌸'];
-            heart.innerHTML = colors[Math.floor(Math.random() * colors.length)];
+            const nightGlow = ['❤️', '🌙', '✨', '⭐', '💖', '🌃'];
+            heart.innerHTML = nightGlow[Math.floor(Math.random() * nightGlow.length)];
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
             heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
-            heart.style.opacity = Math.random();
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 3000);
         }
 
-        function finalAlert() {
-            alert("It's a date! Can't wait to see you! ❤️✨");
+        function sendWhatsApp(choice) {
+            const phoneNumber = "9779845116480"; 
+            const text = "I've decided! Let's go for " + choice + "! See you on the 14th! 🌙✨";
+            const message = encodeURIComponent(text);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+            window.open(whatsappUrl, '_blank');
         }
     </script>
 </body>
 </html>
-
