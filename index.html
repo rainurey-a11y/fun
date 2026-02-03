@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You ❤️</title>
+    <title>For My Favorite Person ❤️</title>
     <style>
+        /* 1. Romantic Gradient Background */
         body {
             display: flex;
             flex-direction: column;
@@ -12,55 +13,96 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #ffeef2;
-            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #ffc1cc 50%, #f8bbd0 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
             overflow: hidden;
         }
+
+        /* 2. Soft Glassmorphism Container */
         #container {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 30px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 40px;
+            border: 2px solid white;
+            box-shadow: 0 20px 40px rgba(255, 105, 180, 0.3);
             max-width: 450px;
             z-index: 10;
+            transition: all 0.5s ease;
         }
+
         img {
             width: 250px;
-            border-radius: 15px;
-            margin-bottom: 20px;
+            border-radius: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
+
         h1 {
-            color: #d63384;
-            font-size: 24px;
-            margin-bottom: 20px;
+            color: #d81b60;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
+
         .buttons {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
             flex-wrap: wrap;
         }
-        button {
-            padding: 12px 25px;
-            font-size: 16px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: 0.2s;
+
+        /* 3. Beating Heart Animation for Yes Button */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
-        .btn-pink { background-color: #ff4d6d; color: white; }
-        .btn-gray { background-color: #adb5bd; color: white; }
-        
+
+        button {
+            padding: 15px 35px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn-pink {
+            background: linear-gradient(45deg, #ff4d6d, #ff758c);
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        .btn-pink:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.4);
+        }
+
+        .btn-gray {
+            background-color: #f0f0f0;
+            color: #888;
+        }
+
+        /* 4. Improved Heart Rain */
         .heart {
             position: fixed;
             top: -10vh;
-            animation: fall 3s linear forwards;
-            color: #ff4d6d;
+            animation: fall linear forwards;
             z-index: 5;
+            user-select: none;
         }
-        @keyframes fall { to { transform: translateY(110vh); } }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -70,59 +112,64 @@
             <img src="minion-minion-loves.gif" alt="Minion Love">
             <h1>Will you be my Valentine?</h1>
             <div class="buttons">
-                <button id="yesBtn" class="btn-pink" onclick="nextPhase()">Yes!</button>
+                <button id="yesBtn" class="btn-pink" onclick="nextPhase()">Yes! ❤️</button>
                 <button id="noBtn" class="btn-gray" onmouseover="moveButton('noBtn')">No</button>
             </div>
         </div>
 
         <div id="phase2" style="display:none;">
             <img src="tenor_1.gif" alt="Happy Minions">
-            <h1>YAY! So... where are we meeting? 😍</h1>
+            <h1>YAY! You made me the happiest! 😍<br><small style="font-size: 16px; color: #ad1457;">So... where are we meeting?</small></h1>
             <div class="buttons">
-                <button class="btn-pink" onclick="finalAlert()">Dinner & Drinks</button>
-                <button class="btn-pink" onclick="finalAlert()">Coffee Date</button>
+                <button class="btn-pink" onclick="finalAlert()">Dinner Date 🥂</button>
+                <button class="btn-pink" onclick="finalAlert()">Movie Night 🍿</button>
                 <button id="changeMindBtn" class="btn-gray" onmouseover="moveButton('changeMindBtn')">I changed my mind</button>
             </div>
         </div>
     </div>
 
     <script>
-        let yesSize = 16;
+        let yesSize = 18;
 
         function moveButton(id) {
             const btn = document.getElementById(id);
+            // Add sound effect here if you want!
             const x = Math.random() * (window.innerWidth - btn.offsetWidth);
             const y = Math.random() * (window.innerHeight - btn.offsetHeight);
             btn.style.position = 'fixed';
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
 
-            // If it's the first "No" button, make the Yes button grow
             if(id === 'noBtn') {
-                yesSize += 10;
-                document.getElementById('yesBtn').style.fontSize = yesSize + 'px';
+                yesSize += 8;
+                const yesBtn = document.getElementById('yesBtn');
+                yesBtn.style.fontSize = yesSize + 'px';
+                yesBtn.style.padding = (yesSize * 0.7) + 'px ' + (yesSize * 1.6) + 'px';
             }
         }
 
         function nextPhase() {
             document.getElementById('phase1').style.display = 'none';
             document.getElementById('phase2').style.display = 'block';
-            setInterval(createHeart, 200);
+            setInterval(createHeart, 150);
         }
 
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
-            heart.innerHTML = '❤️';
+            // Randomly pick between different heart colors
+            const colors = ['❤️', '💖', '💝', '💕', '🌸'];
+            heart.innerHTML = colors[Math.floor(Math.random() * colors.length)];
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
             heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            heart.style.opacity = Math.random();
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 3000);
         }
 
         function finalAlert() {
-            alert("Perfect! I'll text you the details. See you on the 14th! ❤️");
+            alert("It's a date! Can't wait to see you! ❤️✨");
         }
     </script>
 </body>
