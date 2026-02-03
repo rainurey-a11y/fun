@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I have a question...</title>
+    <title>For You ❤️</title>
     <style>
         body {
             display: flex;
@@ -22,7 +22,7 @@
             padding: 2.5rem;
             border-radius: 30px;
             box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            max-width: 400px;
+            max-width: 450px;
             z-index: 10;
         }
         img {
@@ -32,79 +32,82 @@
         }
         h1 {
             color: #d63384;
-            font-size: 28px;
-            margin-bottom: 30px;
+            font-size: 24px;
+            margin-bottom: 20px;
         }
         .buttons {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
         }
         button {
-            padding: 12px 28px;
-            font-size: 18px;
+            padding: 12px 25px;
+            font-size: 16px;
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: 0.2s;
         }
-        #yesBtn {
-            background-color: #ff4d6d;
-            color: white;
-        }
-        #noBtn {
-            background-color: #adb5bd;
-            color: white;
-        }
-        /* Heart Animation Styles */
+        .btn-pink { background-color: #ff4d6d; color: white; }
+        .btn-gray { background-color: #adb5bd; color: white; }
+        
         .heart {
             position: fixed;
             top: -10vh;
-            transform: translateY(0);
             animation: fall 3s linear forwards;
             color: #ff4d6d;
-            font-size: 2rem;
             z-index: 5;
         }
-        @keyframes fall {
-            to {
-                transform: translateY(110vh);
-            }
-        }
-        .hidden {
-            display: none;
-        }
+        @keyframes fall { to { transform: translateY(110vh); } }
     </style>
 </head>
 <body>
 
     <div id="container">
-        <img id="displayGif" src="minion-minion-loves.gif" alt="Minion Love">
-        <h1 id="questionText">Will you be my Valentine?</h1>
-        <div class="buttons" id="btnGroup">
-            <button id="yesBtn" onclick="celebrate()">Yes!</button>
-            <button id="noBtn" onmouseover="moveButton()">No</button>
+        <div id="phase1">
+            <img src="minion-minion-loves.gif" alt="Minion Love">
+            <h1>Will you be my Valentine?</h1>
+            <div class="buttons">
+                <button id="yesBtn" class="btn-pink" onclick="nextPhase()">Yes!</button>
+                <button id="noBtn" class="btn-gray" onmouseover="moveButton('noBtn')">No</button>
+            </div>
+        </div>
+
+        <div id="phase2" style="display:none;">
+            <img src="tenor_1.gif" alt="Happy Minions">
+            <h1>YAY! So... where are we meeting? 😍</h1>
+            <div class="buttons">
+                <button class="btn-pink" onclick="finalAlert()">Dinner & Drinks</button>
+                <button class="btn-pink" onclick="finalAlert()">Coffee Date</button>
+                <button id="changeMindBtn" class="btn-gray" onmouseover="moveButton('changeMindBtn')">I changed my mind</button>
+            </div>
         </div>
     </div>
 
     <script>
-        const yesBtn = document.getElementById('yesBtn');
-        const noBtn = document.getElementById('noBtn');
-        const questionText = document.getElementById('questionText');
+        let yesSize = 16;
 
-        let yesSize = 18;
+        function moveButton(id) {
+            const btn = document.getElementById(id);
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
 
-        function moveButton() {
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
+            // If it's the first "No" button, make the Yes button grow
+            if(id === 'noBtn') {
+                yesSize += 10;
+                document.getElementById('yesBtn').style.fontSize = yesSize + 'px';
+            }
+        }
 
-            yesSize += 10;
-            yesBtn.style.fontSize = yesSize + 'px';
-            yesBtn.style.padding = (yesSize * 0.6) + 'px ' + (yesSize * 1.5) + 'px';
+        function nextPhase() {
+            document.getElementById('phase1').style.display = 'none';
+            document.getElementById('phase2').style.display = 'block';
+            setInterval(createHeart, 200);
         }
 
         function createHeart() {
@@ -112,18 +115,14 @@
             heart.classList.add('heart');
             heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
             document.body.appendChild(heart);
-            
-            setTimeout(() => { heart.remove(); }, 5000);
+            setTimeout(() => heart.remove(), 3000);
         }
 
-        function celebrate() {
-            questionText.innerText = "YAY! Can't wait! ❤️";
-            document.getElementById('btnGroup').classList.add('hidden');
-            
-            // Start the heart shower!
-            setInterval(createHeart, 150);
+        function finalAlert() {
+            alert("Perfect! I'll text you the details. See you on the 14th! ❤️");
         }
     </script>
 </body>
